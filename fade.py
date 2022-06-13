@@ -10,13 +10,22 @@ import time
 import sys
 import getopt
 
+# Sends the command to set a level to a given device
 def setLevel(socket, dca, level):
     level = int(level)
     socket.sendall("set MIXER:Current/DcaCh/Fader/Level {0} 0 {1}\n".format(dca, level).encode())
 
-def fadeDCA(ip, port, dca, targetLevel, steps, duration):
+def fadeDCA(ip, port, dca, targetLevel, duration):
     # Console DCA numbers start at 0
     dca = dca - 1
+
+    # Calculate steps for nice fade
+    if duration >= 60:
+        steps = int(duration * 10)
+    elif duration >= 30:
+        steps = int(duration * 50)
+    else:
+        steps = int(duration * 100)
 
     # Set socket details
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -77,36 +86,28 @@ if __name__ == "__main__":
         sys.exit(2)
 
     for opt, arg in opts:
-        if opt == '-l': # Level
+        if opt == '-d': # DCA
+            dca = int(arg)
+        elif opt == '-l': # Level
             targetLevel = int(arg)
         elif opt == '-t': # Time
             duration = float(arg)
-        elif opt == '-d': # DCA
-            dca = int(arg)
-
+   
+    # We can't fade in negative time...
     if duration < 0:
         print(f'Fade time cannot be less than 0. ({duration})')
         sys.exit(2)
-
-    # Calculate steps for nice fade
-    if duration >= 60:
-        steps = int(duration * 10)
-    elif duration >= 30:
-        steps = int(duration * 50)
-    else:
-        steps = int(duration * 100)
 
     print(f'IP:               {ip}')
     print(f'Port:             {port}')
     print(f'DCA:              {dca}')
     print(f'Target Level:     {targetLevel}')
     print(f'Target Duration:  {duration}')
-    print(f'Steps:            {steps}')
 
     startTime = time.perf_counter()
     print(f'Start Time:       {startTime}')
 
-    fadeDCA(ip, port, dca, targetLevel, steps, duration)
+    fadeDCA(ip, port, dca, targetLevel, duration)
 
     endTime = time.perf_counter()
     print(f'End Time:         {endTime}')
