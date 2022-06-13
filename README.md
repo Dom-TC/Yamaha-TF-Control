@@ -4,7 +4,7 @@ This is a collection of Python scripts for controlling Yamaha TF series consoles
 
 These scripts require Python 3.6 or later, so when first run you may be asked to install Apple's Command Line Tools.  Install them and then retry.
 
-## fade.py
+## fadeDCA.py
 This script, surprisingly, lets you fade a given DCA.
 
 To use it run `python3 fade.py -d <dca> -l <level> -t <fadetime>`.  For example, to fade DCA 1 to -25 over 7 seconds, you'd use the command `fade.py -d 1 -l -25 -t 7`.

@@ -86,7 +86,7 @@ if __name__ == "__main__":
 
     # Create argparser
     parser = argparse.ArgumentParser(
-        prog='fade',
+        prog='fadeDCA',
         description="Fade a DCA on a Yamaha TF-series sound console.",
     )
 
