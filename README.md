@@ -11,3 +11,5 @@ To use it run `python3 fade.py -d <dca> -l <level> -t <fadetime>`.  For example,
 
 ## server.py
 For offline programming, a server application is included that mocks the TF-Rack, sending back the expected responses as the TF-Rack would.  To use it, change the IP address in your script to `localhost` and run `python3 server.py` in a second terminal window, before running the relevant script. 
+
+The server will return every channel to be at `-130dB`.
