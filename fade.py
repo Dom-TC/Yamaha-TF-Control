@@ -15,7 +15,7 @@ def setLevel(socket, dca, level):
     level = int(level)
     socket.sendall("set MIXER:Current/DcaCh/Fader/Level {0} 0 {1}\n".format(dca, level).encode())
 
-def fadeDCA(ip, port, dca, targetLevel, duration):
+def fadeDCA(socket, dca, targetLevel, duration):
     # Console DCA numbers start at 0
     dca = dca - 1
 
@@ -27,15 +27,9 @@ def fadeDCA(ip, port, dca, targetLevel, duration):
     else:
         steps = int(duration * 100)
 
-    # Set socket details
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-    # Connect to console
-    s.connect((ip,port))
-
     # Get current level
-    s.sendall("get MIXER:Current/DcaCh/Fader/Level {0} 0\n".format(dca).encode())
-    response = s.recv(1500).decode().rsplit(" ", 1)
+    socket.sendall("get MIXER:Current/DcaCh/Fader/Level {0} 0\n".format(dca).encode())
+    response = socket.recv(1500).decode().rsplit(" ", 1)
 
     expectedRespnonsePrefix = "OK get MIXER:Current/DcaCh/Fader/Level {0} 0".format(dca)
 
@@ -65,15 +59,12 @@ def fadeDCA(ip, port, dca, targetLevel, duration):
         # Remove two steps to avoid overshooting
         while step <= (steps - 1):
             currentLevel = currentLevel + volDelta
-            setLevel(s, dca, currentLevel)
+            setLevel(socket, dca, currentLevel)
             time.sleep(duration/steps)
             step = step + 1
 
     # Force set to final level, in case of overshoot
-    setLevel(s, dca, targetLevel)
-
-    # Close socket
-    s.close ()
+    setLevel(socket, dca, targetLevel)
 
 if __name__ == "__main__":
     # Get command line arguments
@@ -104,12 +95,21 @@ if __name__ == "__main__":
     print(f'Target Level:     {targetLevel}')
     print(f'Target Duration:  {duration}')
 
+     # Set socket details
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    # Connect to console
+    sock.connect((ip,port))
+
     startTime = time.perf_counter()
     print(f'Start Time:       {startTime}')
 
-    fadeDCA(ip, port, dca, targetLevel, duration)
+    fadeDCA(sock, dca, targetLevel, duration)
 
     endTime = time.perf_counter()
     print(f'End Time:         {endTime}')
 
     print(f'Duration:         {endTime - startTime:0.4f} seconds')
+
+    # Close socket
+    sock.close ()
