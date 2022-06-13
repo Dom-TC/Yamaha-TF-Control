@@ -9,6 +9,7 @@ import socket
 import time
 import sys
 import getopt
+import logging
 
 # Sends the command to set a level to a given device
 def setLevel(socket, dca, level):
@@ -35,7 +36,9 @@ def fadeDCA(socket, dca, targetLevel, duration):
 
     # Check if received expected response
     if response[0] != expectedRespnonsePrefix:
-        print("The console did not send back the expected response.")
+        logging.error("The console did not send back the expected response.")
+        sys.exit(2)
+
 
     startingLevel = int(response[1][:-1].strip('"'))
 
@@ -67,13 +70,16 @@ def fadeDCA(socket, dca, targetLevel, duration):
     setLevel(socket, dca, targetLevel)
 
 if __name__ == "__main__":
+    # Set logging config
+    logging.basicConfig(format='%(message)s', level=logging.INFO)
+
     # Get command line arguments
     argv = sys.argv[1:]
 
     try:
         opts, args = getopt.getopt(argv,"d:l:t:")
     except getopt.GetoptError:
-        print('USAGE:  fade.py -d <dca> -l <level> -t <fadetime>')
+        logging.exception('USAGE:  fade.py -d <dca> -l <level> -t <fadetime>')
         sys.exit(2)
 
     for opt, arg in opts:
@@ -86,14 +92,14 @@ if __name__ == "__main__":
    
     # We can't fade in negative time...
     if duration < 0:
-        print(f'Fade time cannot be less than 0. ({duration})')
+        logging.error(f'Fade time cannot be less than 0. ({duration})')
         sys.exit(2)
 
-    print(f'IP:               {ip}')
-    print(f'Port:             {port}')
-    print(f'DCA:              {dca}')
-    print(f'Target Level:     {targetLevel}')
-    print(f'Target Duration:  {duration}')
+    logging.info(f'IP:               {ip}')
+    logging.info(f'Port:             {port}')
+    logging.info(f'DCA:              {dca}')
+    logging.info(f'Target Level:     {targetLevel}')
+    logging.info(f'Target Duration:  {duration}')
 
      # Set socket details
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -102,14 +108,14 @@ if __name__ == "__main__":
     sock.connect((ip,port))
 
     startTime = time.perf_counter()
-    print(f'Start Time:       {startTime}')
+    logging.info(f'Start Time:       {startTime}')
 
     fadeDCA(sock, dca, targetLevel, duration)
 
     endTime = time.perf_counter()
-    print(f'End Time:         {endTime}')
+    logging.info(f'End Time:         {endTime}')
 
-    print(f'Duration:         {endTime - startTime:0.4f} seconds')
+    logging.info(f'Duration:         {endTime - startTime:0.4f} seconds')
 
     # Close socket
     sock.close ()
