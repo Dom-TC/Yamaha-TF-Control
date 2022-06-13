@@ -5,7 +5,7 @@ import sys
 tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Bind the socket to server address and port 81
-server_address = ('localhost', 49280)
+server_address = ("localhost", 49280)
 tcp_socket.bind(server_address)
 
 # Listen on port 81
@@ -20,17 +20,17 @@ while True:
 
         # Receive and print data 1500 bytes at a time, as long as the client is sending something
         while True:
-            data = connection.recv(1500).decode().replace('\n', '')
+            data = connection.recv(1500).decode().replace("\n", "")
             print(data)
 
             # Return current level for DCA 1
             if data.startswith("get MIXER:Current/DcaCh/Fader/Level"):
-                response = f'OK {data} -13000\n'.encode()
+                response = f"OK {data} -13000\n".encode()
                 connection.send(response)
 
             # Set level for DCA 1
             if data.startswith("set MIXER:Current/DcaCh/Fader/Level"):
-                response = f'OK {data}'.encode()
+                response = f"OK {data}".encode()
                 connection.send(response)
 
             if not data:
