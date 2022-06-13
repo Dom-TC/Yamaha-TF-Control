@@ -68,7 +68,7 @@ def fadeDCA(socket, dca, targetLevel, duration):
             time.sleep(duration/steps)
             step = step + 1
 
-    # Force set to final level, to be sure fade ends at exact value. Shouldn't ever be needed, but...
+    # Force set to final level, to be sure fade ends at exact value
     setLevel(socket, dca, targetLevel)
 
 if __name__ == "__main__":
@@ -148,7 +148,7 @@ if __name__ == "__main__":
 
     fadeDCA(sock, dca, targetLevel, duration)
 
-    #  # Record the current (end) time
+    # Record the current (end) time
     endTime = time.perf_counter()
     logging.info(f'End Time:         {endTime}')
 
