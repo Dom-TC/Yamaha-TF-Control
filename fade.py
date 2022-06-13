@@ -63,13 +63,13 @@ def fadeDCA(ip, port, dca, targetLevel, duration):
         step = 0
 
         # Remove two steps to avoid overshooting
-        while step <= (steps - 2):
+        while step <= (steps - 1):
             currentLevel = currentLevel + volDelta
             setLevel(s, dca, currentLevel)
-            time.sleep((duration)/steps)
+            time.sleep(duration/steps)
             step = step + 1
 
-    # Force set to final level
+    # Force set to final level, in case of overshoot
     setLevel(s, dca, targetLevel)
 
     # Close socket
