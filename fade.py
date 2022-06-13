@@ -4,11 +4,14 @@
 ip = "localhost"
 port = 49280
 
+# Version
+version = "1.1"
+
 # Imports
 import socket
 import time
 import sys
-import getopt
+import argparse
 import logging
 
 # Sends the command to set a level to a given device
@@ -72,27 +75,60 @@ if __name__ == "__main__":
     # Set logging config
     logging.basicConfig(format='%(message)s', level=logging.INFO)
 
-    # Get command line arguments
-    argv = sys.argv[1:]
+    # Create argparser
+    parser = argparse.ArgumentParser(
+        prog='fade',
+        description="Fade a DCA on a Yamaha TF-series sound console.",
+    )
 
-    try:
-        opts, args = getopt.getopt(argv,"d:l:t:")
-    except getopt.GetoptError:
-        logging.exception('USAGE:  fade.py -d <dca> -l <level> -t <fadetime>')
-        sys.exit(2)
+    # version
+    parser.add_argument(
+        '-v',
+        '--version',
+        action="version",
+        help='returns the version number',
+        version=f"%(prog)s {version}"
+    )
 
-    for opt, arg in opts:
-        if opt == '-d': # DCA
-            dca = int(arg)
-        elif opt == '-l': # Level
-            targetLevel = int(arg)
-        elif opt == '-t': # Time
-            duration = float(arg)
-   
-    # We can't fade in negative time...
+    # DCA number
+    parser.add_argument(
+        '-d',
+        '--dca',
+        metavar='<dca>',
+        type=int,
+        required=True,
+        help='the DCA to fade',
+        choices=range(1, 9)
+    )
+
+    # Target level
+    parser.add_argument(
+        '-l',
+        '--level',
+        metavar='<level>',
+        type=int,
+        required=True,
+        help='the target level'
+    )
+
+    # Duration
+    parser.add_argument(
+        '-t',
+        '--time',
+        metavar='<duration>',
+        type=float,
+        required=True,
+        help='the fade duration'
+    )
+
+    # Process args
+    args = parser.parse_args()
+    dca = args.dca
+    targetLevel = args.level
+    duration = args.time
+
     if duration < 0:
-        logging.error(f'Fade time cannot be less than 0. ({duration})')
-        sys.exit(2)
+        parser.error(f'argument -t/--time: time must be greater than 0: {duration}')
 
     logging.info(f'IP:               {ip}')
     logging.info(f'Port:             {port}')
