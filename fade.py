@@ -23,13 +23,22 @@ def fadeDCA(socket, dca, targetLevel, duration):
     # Console DCA numbers start at 0
     dca = dca - 1
 
+    # Adjust duration to deal with processing / response time
     # Calculate steps for nice fade
+    durationMultiplier = 1.00
+    stepsMultiplier = 100
     if duration >= 60:
-        steps = int(duration * 10)
+        durationMultiplier = 1.01
+        stepsMultiplier = 10
     elif duration >= 30:
-        steps = int(duration * 50)
+        durationMultiplier = 0.97
+        stepsMultiplier = 50
     else:
-        steps = int(duration * 100)
+        durationMultiplier = 0.96
+        stepsMultiplier = 100
+
+    duration = duration * durationMultiplier
+    steps = int(duration * stepsMultiplier)
 
     # Get current level
     socket.sendall("get MIXER:Current/DcaCh/Fader/Level {0} 0\n".format(dca).encode())
