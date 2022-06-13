@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+
+# Console Details
+ip = "localhost"
+port = 49280
+
 # Imports
 import socket
 import time
@@ -62,15 +67,6 @@ def main(ip, port, dca, targetLevel, steps, duration):
     s.close ()
 
 if __name__ == "__main__":
-    # Console Details
-    ip = "localhost"
-    port = 49280
-
-    # Default settings if no command line arguments specified
-    dca = 1
-    targetLevel = 0 # -inf = -140
-    duration = 5 # Fade duration in seconds
-
     # Get command line arguments
     argv = sys.argv[1:]
 
