@@ -2,7 +2,7 @@
 
 This is a collection of Python scripts for controlling Yamaha TF series consoles over a network.  An example QLab file is included to show how you might intergrate the script with your show.
 
-These scripts require Python 3, so when first run you may be asked to install Apple's Command Line Tools.  Install them and then retry.
+These scripts require Python 3.6 or later, so when first run you may be asked to install Apple's Command Line Tools.  Install them and then retry.
 
 ## fade.py
 This script, surprisingly, lets you fade a given DCA.
