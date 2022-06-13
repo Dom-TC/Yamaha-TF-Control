@@ -14,7 +14,7 @@ def setLevel(socket, dca, level):
     level = int(level)
     socket.sendall("set MIXER:Current/DcaCh/Fader/Level {0} 0 {1}\n".format(dca, level).encode())
 
-def main(ip, port, dca, targetLevel, steps, duration):
+def fadeDCA(ip, port, dca, targetLevel, steps, duration):
     # Console DCA numbers start at 0
     dca = dca - 1
 
@@ -106,7 +106,7 @@ if __name__ == "__main__":
     startTime = time.perf_counter()
     print(f'Start Time:       {startTime}')
 
-    main(ip, port, dca, targetLevel, steps, duration)
+    fadeDCA(ip, port, dca, targetLevel, steps, duration)
 
     endTime = time.perf_counter()
     print(f'End Time:         {endTime}')
