@@ -16,14 +16,26 @@ import argparse
 import logging
 
 
-def recallScene(socket, scene):
+def recallScene(socket, bank, scene):
+    bank = bank.lower()
+
+    # Validate scene
+    if type(scene) != int or scene not in range(0, 100):
+        logging.error(f"Scene must be a number between 1 and 99: {scene}")
+        sys.exit(2)
+
+    # Validate bank
+    if bank != "a" and bank != "b":
+        logging.error(f"Bank must be either `a` or `b`: {bank.lower()}")
+        sys.exit(2)
+
     # Recall scene
-    logging.info(f"Recalling: {scene}")
-    socket.sendall("ssrecall_ex scene_a {0}\n".format(scene).encode())
+    logging.info(f"Recalling: {bank.upper()}{scene}")
+    socket.sendall(f"ssrecall_ex scene_{bank} {scene}\n".encode())
 
     # Confirm expected response
     response = socket.recv(1500).decode()
-    expected_response = f"OK ssrecall_ex scene_a {scene}"
+    expected_response = f"OK ssrecall_ex scene_{bank} {scene}"
 
     if response != expected_response:
         logging.error(
@@ -89,7 +101,7 @@ if __name__ == "__main__":
     # Connect to console
     sock.connect((ip, port))
 
-    recallScene(sock, scene)
+    recallScene(sock, bank, scene)
 
     # Close socket
     sock.close()
