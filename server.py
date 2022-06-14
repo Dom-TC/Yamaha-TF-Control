@@ -23,13 +23,18 @@ while True:
             data = connection.recv(1500).decode().replace("\n", "")
             print(data)
 
-            # Return current level for DCA 1
+            # Get DCA Level
             if data.startswith("get MIXER:Current/DcaCh/Fader/Level"):
                 response = f"OK {data} -13000\n".encode()
                 connection.send(response)
 
-            # Set level for DCA 1
+            # Set DCA Level
             if data.startswith("set MIXER:Current/DcaCh/Fader/Level"):
+                response = f"OK {data}".encode()
+                connection.send(response)
+
+            # Recall scene
+            if data.startswith("ssrecall_ex"):
                 response = f"OK {data}".encode()
                 connection.send(response)
 
