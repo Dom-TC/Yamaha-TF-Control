@@ -16,7 +16,7 @@ version = "1.1"
 
 
 # Sends the command to set a level to a given device
-def setLevel(socket, dca, level):
+def _setLevel(socket, dca, level):
     level = int(level)
     socket.sendall(
         "set MIXER:Current/DcaCh/Fader/Level {0} 0 {1}\n".format(dca, level).encode()
@@ -77,12 +77,12 @@ def fadeDCA(socket, dca, targetLevel, duration):
 
         while step < steps:
             currentLevel = currentLevel + volDelta
-            setLevel(socket, dca, currentLevel)
+            _setLevel(socket, dca, currentLevel)
             time.sleep(duration / steps)
             step = step + 1
 
     # Force set to final level, to be sure fade ends at exact value
-    setLevel(socket, dca, targetLevel)
+    _setLevel(socket, dca, targetLevel)
 
 
 if __name__ == "__main__":
