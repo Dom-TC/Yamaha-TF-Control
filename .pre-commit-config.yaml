@@ -9,7 +9,7 @@ repos:
     rev: 4.0.1
     hooks:
       - id: flake8
-        additional_dependencies: ["flake8-builtins", "flake8-docstrings", "flake8-eradicate"]
+        additional_dependencies: ["flake8-builtins", "flake8-eradicate"]
   - repo: https://github.com/PyCQA/bandit
     rev: 1.7.0
     hooks:
