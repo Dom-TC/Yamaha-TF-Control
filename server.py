@@ -38,6 +38,11 @@ while True:
                 response = f"OK {data}".encode()
                 connection.send(response)
 
+            # Set mute master
+            if data.startswith("set MIXER:Current/MuteMaster/On"):
+                response = f"OK {data}".encode()
+                connection.send(response)
+
             if not data:
                 break
 
