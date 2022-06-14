@@ -10,7 +10,6 @@ tf_version = "4.2"
 
 # Imports
 import socket
-import time
 import sys
 import argparse
 import logging
@@ -26,7 +25,7 @@ def recallScene(socket, bank, scene):
 
     # Validate bank
     if bank != "a" and bank != "b":
-        logging.error(f"Bank must be either `a` or `b`: {bank.lower()}")
+        logging.error(f"Bank must be either `a` or `b`: {bank}")
         sys.exit(2)
 
     # Recall scene
