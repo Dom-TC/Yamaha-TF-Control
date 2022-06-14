@@ -17,9 +17,17 @@ import logging
 
 def recallScene(socket, scene):
     # Recall scene
-    logging.info("Recalling: ", scene)
-    s.sendall("ssrecall_ex scene_a {0}\n".format(scene).encode())
-    logging.info(s.recv(1500))
+    logging.info(f"Recalling: {scene}")
+    socket.sendall("ssrecall_ex scene_a {0}\n".format(scene).encode())
+
+    # Confirm expected response
+    response = socket.recv(1500).decode()
+    expected_response = f"OK ssrecall_ex scene_a {scene}"
+
+    if response != expected_response:
+        logging.error(
+            f"The console did not send back the expected response.\nExpected:   {expected_response}\nRecieved:   {response}"
+        )
 
 
 if __name__ == "__main__":
