@@ -1,3 +1,12 @@
+#!/usr/bin/env python3
+
+# Console Details
+ip = "localhost"
+port = 49280
+
+# Version
+version = "1.1"
+
 # Imports
 import socket
 import time
@@ -5,29 +14,14 @@ import sys
 import getopt
 
 
-def recallScene(ip, port, scene):
-    # Set socket details
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-    # Connect to console
-    s.connect((ip, port))
-
+def recallScene(socket, scene):
     # Recall scene
     print("Recalling: ", scene)
     s.sendall("ssrecall_ex scene_a {0}\n".format(scene).encode())
     print(s.recv(1500))
 
-    # Close socket
-    s.close()
-
 
 if __name__ == "__main__":
-    # Console Details
-    ip = "192.168.2.150"
-    port = 49280
-
-    scene = 11
-
     #  Get command line arguments
     argv = sys.argv[1:]
 
@@ -41,4 +35,13 @@ if __name__ == "__main__":
         if opt == "-s":  # Level
             scene = int(arg)
 
-    recallScene(ip, port, scene)
+    # Set socket details
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    # Connect to console
+    sock.connect((ip, port))
+
+    recallScene(sock, scene)
+
+    # Close socket
+    sock.close()
