@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
 
+# Imports
+import argparse
+import logging
+import socket
+import sys
+import time
+
 # Console Details
 ip = "localhost"
 port = 49280
@@ -7,12 +14,6 @@ port = 49280
 # Version
 version = "1.1"
 
-# Imports
-import socket
-import time
-import sys
-import argparse
-import logging
 
 # Sends the command to set a level to a given device
 def setLevel(socket, dca, level):

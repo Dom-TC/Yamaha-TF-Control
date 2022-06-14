@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
 
+# Imports
+import argparse
+import logging
+import socket
+import sys
+
 # Console Details
 ip = "localhost"
 port = 49280
@@ -7,12 +13,6 @@ port = 49280
 # Version
 version = "1.0"
 tf_version = "4.2"
-
-# Imports
-import socket
-import sys
-import argparse
-import logging
 
 
 def setMuteMaster(socket, master, state):

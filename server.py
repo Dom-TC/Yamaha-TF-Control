@@ -46,10 +46,10 @@ while True:
             if not data:
                 break
 
-    except ConnectionResetError as error:
+    except ConnectionResetError:
         pass
 
-    except BrokenPipeError as error:
+    except BrokenPipeError:
         pass
 
     finally:
