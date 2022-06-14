@@ -6,12 +6,13 @@ port = 49280
 
 # Version
 version = "1.1"
+tf_version = "4.2"
 
 # Imports
 import socket
 import time
 import sys
-import getopt
+import argparse
 import logging
 
 
@@ -34,23 +35,53 @@ if __name__ == "__main__":
     # Set logging config
     logging.basicConfig(format="%(message)s", level=logging.INFO)
 
-    #  Get command line arguments
-    argv = sys.argv[1:]
+    # Create argparser
+    parser = argparse.ArgumentParser(
+        prog="recallScene",
+        description="Recall a scene on a Yamaha TF-series sound console.",
+        epilog=f"These scripts have been tested against a Yamaha TF-Rack v{tf_version}",
+    )
 
-    try:
-        opts, args = getopt.getopt(argv, "s:")
-    except getopt.GetoptError:
-        logging.error("USAGE:  recallScene.py -s <scene number>")
-        sys.exit(2)
+    # version
+    parser.add_argument(
+        "-v",
+        "--version",
+        action="version",
+        help="returns the version number",
+        version=f"%(prog)s v{version}",
+    )
 
-    for opt, arg in opts:
-        if opt == "-s":  # Level
-            scene = int(arg)
+    # Bank letter
+    parser.add_argument(
+        "-b",
+        "--bank",
+        metavar="<bank>",
+        type=str,
+        default="a",
+        help="the scene bank",
+        choices=["a", "b"],
+    )
 
-    logging.info(f"IP:      {ip}")
-    logging.info(f"Port:    {port}")
-    logging.info(f"Bank:    {bank}")
-    logging.info(f"Scene:   {scene}")
+    # Scene number
+    parser.add_argument(
+        "-s",
+        "--scene",
+        metavar="<scene>",
+        type=int,
+        required=True,
+        help="the scene to recall",
+        choices=range(0, 100),
+    )
+
+    # Process args
+    args = parser.parse_args()
+    bank = args.bank
+    scene = args.scene
+
+    logging.info(f"IP:        {ip}")
+    logging.info(f"Port:      {port}")
+    logging.info(f"Bank:      {bank}")
+    logging.info(f"Scene:     {scene}")
 
     # Set socket details
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
