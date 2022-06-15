@@ -36,7 +36,7 @@ def recallScene(socket, bank, scene):
     response = socket.recv(1500).decode()
     expected_response = f"OK ssrecall_ex scene_{bank} {scene}"
 
-    if response != expected_response:
+    if response.strip() != expected_response.strip():
         logging.error(
             f"The console did not send back the expected response.\nExpected:   {expected_response}\nRecieved:   {response}"
         )

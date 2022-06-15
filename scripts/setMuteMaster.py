@@ -45,9 +45,9 @@ def setMuteMaster(socket, master, state):
 
     # Confirm expected response
     response = socket.recv(1500).decode()
-    expected_response = f"OK set MIXER:Current/MuteMaster/On {masterCode} 0 {stateCode}"
+    expected_response = f'OK set MIXER:Current/MuteMaster/On {masterCode} 0 {stateCode} "{state.upper()}"'
 
-    if response != expected_response:
+    if response.strip() != expected_response.strip():
         logging.error(
             f"The console did not send back the expected response.\nExpected:   {expected_response}\nRecieved:   {response}"
         )
