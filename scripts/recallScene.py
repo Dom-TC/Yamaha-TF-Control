@@ -12,7 +12,7 @@ port = 49280
 
 # Version
 version = "1.1"
-tf_version = "4.2"
+tf_version = "4.01"
 
 
 def recallScene(socket, bank, scene):

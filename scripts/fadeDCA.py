@@ -13,6 +13,7 @@ port = 49280
 
 # Version
 version = "1.1"
+tf_version = "4.01"
 
 
 # Sends the command to set a level to a given device
@@ -93,6 +94,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         prog="fadeDCA",
         description="Fade a DCA on a Yamaha TF-series sound console.",
+        epilog=f"These scripts have been tested against a Yamaha TF-Rack v{tf_version}",
     )
 
     # version

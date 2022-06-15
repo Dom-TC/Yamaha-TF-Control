@@ -12,7 +12,7 @@ port = 49280
 
 # Version
 version = "1.0"
-tf_version = "4.2"
+tf_version = "4.01"
 
 
 def setMuteMaster(socket, master, state):
