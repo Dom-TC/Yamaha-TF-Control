@@ -17,51 +17,49 @@ tf_version = "4.01"
 
 
 # Sends the command to set a level to a given device
-def _setLevel(socket, dca, level):
+def _set_level(socket, dca, level):
     level = int(level)
-    socket.sendall(
-        "set MIXER:Current/DcaCh/Fader/Level {0} 0 {1}\n".format(dca, level).encode()
-    )
+    socket.sendall(f"set MIXER:Current/DcaCh/Fader/Level {dca} 0 {level}\n".encode())
 
 
-def fadeDCA(socket, dca, targetLevel, duration):
+def fade_dca(socket, dca, target_level, duration):
     # Console DCA numbers start at 0
     dca = dca - 1
 
     # Adjust duration to deal with processing / response time
     # Calculate steps for nice fade
-    durationMultiplier = 1.00
-    stepsMultiplier = 100
+    duration_multiplier = 1.00
+    steps_multiplier = 100
     if duration >= 60:
-        durationMultiplier = 1.01
-        stepsMultiplier = 10
+        duration_multiplier = 1.01
+        steps_multiplier = 10
     elif duration >= 30:
-        durationMultiplier = 0.97
-        stepsMultiplier = 50
+        duration_multiplier = 0.97
+        steps_multiplier = 50
     else:
-        durationMultiplier = 0.96
-        stepsMultiplier = 100
+        duration_multiplier = 0.96
+        steps_multiplier = 100
 
-    duration = duration * durationMultiplier
-    steps = int(duration * stepsMultiplier)
+    duration = duration * duration_multiplier
+    steps = int(duration * steps_multiplier)
 
     # Get current level
-    socket.sendall("get MIXER:Current/DcaCh/Fader/Level {0} 0\n".format(dca).encode())
+    socket.sendall(f"get MIXER:Current/DcaCh/Fader/Level {dca} 0\n".encode())
     response = socket.recv(1500).decode().rsplit(" ", 1)
 
-    expectedRespnonsePrefix = "OK get MIXER:Current/DcaCh/Fader/Level {0} 0".format(dca)
+    expected_respnonse_prefix = f"OK get MIXER:Current/DcaCh/Fader/Level {dca} 0"
 
     # Check if received expected response
-    if response[0] != expectedRespnonsePrefix:
+    if response[0] != expected_respnonse_prefix:
         logging.error("The console did not send back the expected response.")
         sys.exit(2)
 
     # Parse response from console for the final number - the current level
-    startingLevel = int(response[1][:-1].strip('"'))
+    starting_level = int(response[1][:-1].strip('"'))
 
     # The TF-Rack sets -inf to be -37986. In reality it's at -14000
-    if startingLevel < -14000:
-        startingLevel = -14000
+    if starting_level < -14000:
+        starting_level = -14000
 
     # Adjust duration to deal with processing / response time
     duration = duration * 0.95
@@ -69,21 +67,21 @@ def fadeDCA(socket, dca, targetLevel, duration):
     # Fade, if needed
     if duration > 0:
         # Calculate required level differences
-        targetLevel = targetLevel * 100  # -3db = -300
-        volSpan = targetLevel - startingLevel
-        volDelta = volSpan / steps
+        target_level = target_level * 100  # -3db = -300
+        vol_span = target_level - starting_level
+        vol_delta = vol_span / steps
 
-        currentLevel = startingLevel
+        current_level = starting_level
         step = 0
 
         while step < steps:
-            currentLevel = currentLevel + volDelta
-            _setLevel(socket, dca, currentLevel)
+            current_level = current_level + vol_delta
+            _set_level(socket, dca, current_level)
             time.sleep(duration / steps)
             step = step + 1
 
     # Force set to final level, to be sure fade ends at exact value
-    _setLevel(socket, dca, targetLevel)
+    _set_level(socket, dca, target_level)
 
 
 if __name__ == "__main__":
@@ -140,7 +138,7 @@ if __name__ == "__main__":
     # Process args
     args = parser.parse_args()
     dca = args.dca
-    targetLevel = args.level
+    target_level = args.level
     duration = args.time
 
     if duration < 0:
@@ -149,7 +147,7 @@ if __name__ == "__main__":
     logging.info(f"IP:               {ip}")
     logging.info(f"Port:             {port}")
     logging.info(f"DCA:              {dca}")
-    logging.info(f"Target Level:     {targetLevel}")
+    logging.info(f"Target Level:     {target_level}")
     logging.info(f"Target Duration:  {duration}")
 
     # Set socket details
@@ -159,17 +157,17 @@ if __name__ == "__main__":
     sock.connect((ip, port))
 
     # Record the current (start) time to calculate the actual duration at end
-    startTime = time.perf_counter()
-    logging.info(f"Start Time:       {startTime}")
+    start_time = time.perf_counter()
+    logging.info(f"Start Time:       {start_time}")
 
-    fadeDCA(sock, dca, targetLevel, duration)
+    fade_dca(sock, dca, target_level, duration)
 
     # Record the current (end) time
-    endTime = time.perf_counter()
-    logging.info(f"End Time:         {endTime}")
+    end_time = time.perf_counter()
+    logging.info(f"End Time:         {end_time}")
 
     # Calculate how long the fade took
-    logging.info(f"Duration:         {endTime - startTime:0.4f} seconds")
+    logging.info(f"Duration:         {end_time - start_time:0.4f} seconds")
 
     # Close socket
     sock.close()

@@ -16,7 +16,7 @@ while True:
     connection, client = tcp_socket.accept()
 
     try:
-        print("Connected to client IP: {}".format(client))
+        print(f"Connected to client IP: {client}")
 
         # Receive and print data 1500 bytes at a time, as long as the client is sending something
         while True:

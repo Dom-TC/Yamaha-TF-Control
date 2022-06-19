@@ -11,28 +11,28 @@ ip = "localhost"
 port = 49280
 
 # Version
-version = "1.0"
+version = "1.1"
 tf_version = "4.01"
 
 
-def setMuteMaster(socket, master, state):
+def set_mute_master(socket, master, state):
     master = master.lower()
     state = state.lower()
 
     # Get master code
     if master == "input":
-        masterCode = 0
+        master_code = 0
     elif master == "fx":
-        masterCode = 1
+        master_code = 1
     else:
         logging.error(f"Master must be either `input` or `fx`: {master}")
         sys.exit(2)
 
     # Validate bank
     if state == "off":
-        stateCode = 0
+        state_code = 0
     elif state == "on":
-        stateCode = 1
+        state_code = 1
     else:
         logging.error(f"State must be either `on` or `off`: {state}")
         sys.exit(2)
@@ -40,12 +40,12 @@ def setMuteMaster(socket, master, state):
     # Recall scene
     logging.info(f"Setting {master} mute to {state}")
     socket.sendall(
-        f"set MIXER:Current/MuteMaster/On {masterCode} 0 {stateCode}\n".encode()
+        f"set MIXER:Current/MuteMaster/On {master_code} 0 {state_code}\n".encode()
     )
 
     # Confirm expected response
     response = socket.recv(1500).decode()
-    expected_response = f'OK set MIXER:Current/MuteMaster/On {masterCode} 0 {stateCode} "{state.upper()}"'
+    expected_response = f'OK set MIXER:Current/MuteMaster/On {master_code} 0 {state_code} "{state.upper()}"'
 
     if response.strip() != expected_response.strip():
         logging.error(
@@ -59,7 +59,7 @@ if __name__ == "__main__":
 
     # Create argparser
     parser = argparse.ArgumentParser(
-        prog="setMuteMaster",
+        prog="set_mute_master",
         description="Sets the input and fx mute masters on a Yamaha TF-series sound console.",
         epilog=f"These scripts have been tested against a Yamaha TF-Rack v{tf_version}",
     )
@@ -111,7 +111,7 @@ if __name__ == "__main__":
     # Connect to console
     sock.connect((ip, port))
 
-    setMuteMaster(sock, master, state)
+    set_mute_master(sock, master, state)
 
     # Close socket
     sock.close()

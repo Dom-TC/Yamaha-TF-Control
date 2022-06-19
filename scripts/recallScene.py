@@ -15,7 +15,7 @@ version = "1.1"
 tf_version = "4.01"
 
 
-def recallScene(socket, bank, scene):
+def recall_scene(socket, bank, scene):
     bank = bank.lower()
 
     # Validate scene
@@ -48,7 +48,7 @@ if __name__ == "__main__":
 
     # Create argparser
     parser = argparse.ArgumentParser(
-        prog="recallScene",
+        prog="recall_scene",
         description="Recall a scene on a Yamaha TF-series sound console.",
         epilog=f"These scripts have been tested against a Yamaha TF-Rack v{tf_version}",
     )
@@ -100,7 +100,7 @@ if __name__ == "__main__":
     # Connect to console
     sock.connect((ip, port))
 
-    recallScene(sock, bank, scene)
+    recall_scene(sock, bank, scene)
 
     # Close socket
     sock.close()
