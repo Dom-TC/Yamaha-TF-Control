@@ -10,6 +10,9 @@ packages = [{include = "yamaha_desk_control"}]
 [tool.poetry.dependencies]
 python = "^3.10"
 
+[tool.poetry.scripts]
+yamaha-control = 'control:main'
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
