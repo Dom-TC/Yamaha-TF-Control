@@ -57,46 +57,7 @@ if __name__ == "__main__":
     # Set logging config
     logging.basicConfig(format="%(message)s", level=logging.INFO)
 
-    # Create argparser
-    parser = argparse.ArgumentParser(
-        prog="set_mute_master",
-        description="Sets the input and fx mute masters on a Yamaha TF-series sound console.",
-        epilog=f"These scripts have been tested against a Yamaha TF-Rack v{tf_version}",
-    )
-
-    # version
-    parser.add_argument(
-        "-v",
-        "--version",
-        action="version",
-        help="returns the version number",
-        version=f"%(prog)s v{version}",
-    )
-
-    # Master
-    parser.add_argument(
-        "-m",
-        "--master",
-        metavar="<master>",
-        type=str,
-        default="input",
-        help="the mute master to be set",
-        choices=["input", "fx"],
-    )
-
-    # State
-    parser.add_argument(
-        "-s",
-        "--state",
-        metavar="<state>",
-        type=str,
-        required=True,
-        help="the state to set the mute master to",
-        choices=["on", "off"],
-    )
-
     # Process args
-    args = parser.parse_args()
     master = args.master
     state = args.state
 

@@ -46,46 +46,7 @@ if __name__ == "__main__":
     # Set logging config
     logging.basicConfig(format="%(message)s", level=logging.INFO)
 
-    # Create argparser
-    parser = argparse.ArgumentParser(
-        prog="recall_scene",
-        description="Recall a scene on a Yamaha TF-series sound console.",
-        epilog=f"These scripts have been tested against a Yamaha TF-Rack v{tf_version}",
-    )
-
-    # version
-    parser.add_argument(
-        "-v",
-        "--version",
-        action="version",
-        help="returns the version number",
-        version=f"%(prog)s v{version}",
-    )
-
-    # Bank letter
-    parser.add_argument(
-        "-b",
-        "--bank",
-        metavar="<bank>",
-        type=str,
-        default="a",
-        help="the scene bank",
-        choices=["a", "b"],
-    )
-
-    # Scene number
-    parser.add_argument(
-        "-s",
-        "--scene",
-        metavar="<scene>",
-        type=int,
-        required=True,
-        help="the scene to recall",
-        choices=range(0, 100),
-    )
-
     # Process args
-    args = parser.parse_args()
     bank = args.bank
     scene = args.scene
 

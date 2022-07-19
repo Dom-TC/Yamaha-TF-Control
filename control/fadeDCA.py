@@ -88,55 +88,7 @@ if __name__ == "__main__":
     # Set logging config
     logging.basicConfig(format="%(message)s", level=logging.INFO)
 
-    # Create argparser
-    parser = argparse.ArgumentParser(
-        prog="fadeDCA",
-        description="Fade a DCA on a Yamaha TF-series sound console.",
-        epilog=f"These scripts have been tested against a Yamaha TF-Rack v{tf_version}",
-    )
-
-    # version
-    parser.add_argument(
-        "-v",
-        "--version",
-        action="version",
-        help="returns the version number",
-        version=f"%(prog)s {version}",
-    )
-
-    # DCA number
-    parser.add_argument(
-        "-d",
-        "--dca",
-        metavar="<dca>",
-        type=int,
-        required=True,
-        help="the DCA to fade",
-        choices=range(1, 9),
-    )
-
-    # Target level
-    parser.add_argument(
-        "-l",
-        "--level",
-        metavar="<level>",
-        type=int,
-        required=True,
-        help="the target level",
-    )
-
-    # Duration
-    parser.add_argument(
-        "-t",
-        "--time",
-        metavar="<duration>",
-        type=float,
-        required=True,
-        help="the fade duration",
-    )
-
     # Process args
-    args = parser.parse_args()
     dca = args.dca
     target_level = args.level
     duration = args.time
