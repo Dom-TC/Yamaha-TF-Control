@@ -1,3 +1,19 @@
+[tool.poetry]
+name = "yamaha-desk-control"
+version = "1.0.0"
+description = "A module to control various Yamaha Audio Consoles"
+authors = ["Dom Chester <dom.chester@me.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "yamaha_desk_control"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
 [tool.isort]
 profile = "black"
 src_paths = ["scripts"]
