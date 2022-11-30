@@ -12,7 +12,7 @@ ip = "localhost"
 port = 49280
 
 # Version
-version = "1.1"
+version = "1.2"
 tf_version = "4.01"
 
 
