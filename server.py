@@ -43,6 +43,11 @@ while True:
                 response = f"OK {data}".encode()
                 connection.send(response)
 
+            # Set input mute
+            if data.startswith("set MIXER:Current/InCh/Fader/On"):
+                response = f"OK {data}".encode()
+                connection.send(response)
+
             if not data:
                 break
 
