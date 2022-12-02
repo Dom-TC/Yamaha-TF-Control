@@ -26,6 +26,22 @@ options:
                         the fade duration
 ```
 
+## muteInput.py
+
+```
+usage: set_input_mute [-h] [-v] -c <channel> -s <state>
+
+Sets the state of an input mute on a Yamaha TF-series sound console.
+
+options:
+  -h, --help            show this help message and exit
+  -v, --version         returns the version number
+  -c <channel>, --channel <channel>
+                        the channel to be muted
+  -s <state>, --state <state>
+                        the state to set the channel's mute to
+```
+
 ## recallScene.py
 
 ```
