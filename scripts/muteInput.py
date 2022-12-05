@@ -35,9 +35,7 @@ def set_input_mute(socket, channel, state):
 
     # Confirm expected response
     response = socket.recv(1500).decode()
-    expected_response = (
-        f"OK set MIXER:Current/InCh/Fader/On {channel - 1} 0 {state_code}"
-    )
+    expected_response = f'OK set MIXER:Current/InCh/Fader/On {channel - 1} 0 {state_code} "{state.upper()}"'
 
     if response.strip() != expected_response.strip():
         logging.error(
