@@ -40,12 +40,24 @@ while True:
 
             # Set mute master
             if data.startswith("set MIXER:Current/MuteMaster/On"):
-                response = f"OK {data}".encode()
+                mute_state = int(data[-1:])
+                if mute_state == 1:
+                    suffix = '"ON"'
+                elif mute_state == 0:
+                    suffix = '"OFF"'
+
+                response = f"OK {data} {suffix}".encode()
                 connection.send(response)
 
             # Set input mute
             if data.startswith("set MIXER:Current/InCh/Fader/On"):
-                response = f"OK {data}".encode()
+                mute_state = int(data[-1:])
+                if mute_state == 1:
+                    suffix = '"ON"'
+                elif mute_state == 0:
+                    suffix = '"OFF"'
+
+                response = f"OK {data} {suffix}".encode()
                 connection.send(response)
 
             if not data:
