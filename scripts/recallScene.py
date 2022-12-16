@@ -11,7 +11,7 @@ ip = "localhost"
 port = 49280
 
 # Version
-version = "1.2.1"
+version = "1.3.0"
 tf_version = "4.01"
 
 
@@ -29,7 +29,9 @@ def recall_scene(socket, bank, scene):
         sys.exit(2)
 
     # Recall scene
-    logging.info(f"Recalling: {bank.upper()}{scene}")
+    if verbose:
+        logging.info(f"Recalling: {bank.upper()}{scene}")
+
     socket.sendall(f"ssrecall_ex scene_{bank} {scene}\n".encode())
 
     # Confirm expected response
@@ -62,6 +64,14 @@ if __name__ == "__main__":
         version=f"%(prog)s v{version}",
     )
 
+    # Verbose
+    parser.add_argument(
+        "-V",
+        "--verbose",
+        action="store_true",
+        help="output information about the running command",
+    )
+
     # Bank letter
     parser.add_argument(
         "-b",
@@ -88,11 +98,13 @@ if __name__ == "__main__":
     args = parser.parse_args()
     bank = args.bank
     scene = args.scene
+    verbose = args.verbose
 
-    logging.info(f"IP:        {ip}")
-    logging.info(f"Port:      {port}")
-    logging.info(f"Bank:      {bank}")
-    logging.info(f"Scene:     {scene}")
+    if verbose:
+        logging.info(f"IP:        {ip}")
+        logging.info(f"Port:      {port}")
+        logging.info(f"Bank:      {bank}")
+        logging.info(f"Scene:     {scene}")
 
     # Set socket details
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

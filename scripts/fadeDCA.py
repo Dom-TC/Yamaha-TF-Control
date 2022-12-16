@@ -12,7 +12,7 @@ ip = "localhost"
 port = 49280
 
 # Version
-version = "1.2.1"
+version = "1.3.0"
 tf_version = "4.01"
 
 
@@ -104,6 +104,14 @@ if __name__ == "__main__":
         version=f"%(prog)s {version}",
     )
 
+    # Verbose
+    parser.add_argument(
+        "-V",
+        "--verbose",
+        action="store_true",
+        help="output information about the running command",
+    )
+
     # DCA number
     parser.add_argument(
         "-d",
@@ -140,15 +148,17 @@ if __name__ == "__main__":
     dca = args.dca
     target_level = args.level
     duration = args.time
+    verbose = args.verbose
 
     if duration < 0:
         parser.error(f"argument -t/--time: time must be greater than 0: {duration}")
 
-    logging.info(f"IP:               {ip}")
-    logging.info(f"Port:             {port}")
-    logging.info(f"DCA:              {dca}")
-    logging.info(f"Target Level:     {target_level}")
-    logging.info(f"Target Duration:  {duration}")
+    if verbose:
+        logging.info(f"IP:               {ip}")
+        logging.info(f"Port:             {port}")
+        logging.info(f"DCA:              {dca}")
+        logging.info(f"Target Level:     {target_level}")
+        logging.info(f"Target Duration:  {duration}")
 
     # Set socket details
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -157,17 +167,19 @@ if __name__ == "__main__":
     sock.connect((ip, port))
 
     # Record the current (start) time to calculate the actual duration at end
-    start_time = time.perf_counter()
-    logging.info(f"Start Time:       {start_time}")
+    if verbose:
+        start_time = time.perf_counter()
+        logging.info(f"Start Time:       {start_time}")
 
     fade_dca(sock, dca, target_level, duration)
 
-    # Record the current (end) time
-    end_time = time.perf_counter()
-    logging.info(f"End Time:         {end_time}")
+    if verbose:
+        # Record the current (end) time
+        end_time = time.perf_counter()
+        logging.info(f"End Time:         {end_time}")
 
-    # Calculate how long the fade took
-    logging.info(f"Duration:         {end_time - start_time:0.4f} seconds")
+        # Calculate how long the fade took
+        logging.info(f"Duration:         {end_time - start_time:0.4f} seconds")
 
     # Close socket
     sock.close()

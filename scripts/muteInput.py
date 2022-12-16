@@ -11,7 +11,7 @@ ip = "localhost"
 port = 49280
 
 # Version
-version = "1.2.1"
+version = "1.3.0"
 tf_version = "4.01"
 
 
@@ -28,7 +28,9 @@ def set_input_mute(socket, channel, state):
         sys.exit(2)
 
     # Recall scene
-    logging.info(f"Setting channel {channel} mute to {state}")
+    if verbose:
+        logging.info(f"Setting channel {channel} mute to {state}")
+
     socket.sendall(
         f"set MIXER:Current/InCh/Fader/On {channel - 1} 0 {state_code}\n".encode()
     )
@@ -63,6 +65,14 @@ if __name__ == "__main__":
         version=f"%(prog)s v{version}",
     )
 
+    # Verbose
+    parser.add_argument(
+        "-V",
+        "--verbose",
+        action="store_true",
+        help="output information about the running command",
+    )
+
     # Channel
     parser.add_argument(
         "-c",
@@ -89,11 +99,13 @@ if __name__ == "__main__":
     args = parser.parse_args()
     channel = args.channel
     state = args.state
+    verbose = args.verbose
 
-    logging.info(f"IP:          {ip}")
-    logging.info(f"Port:        {port}")
-    logging.info(f"Channel:     {channel}")
-    logging.info(f"State:       {state}")
+    if verbose:
+        logging.info(f"IP:          {ip}")
+        logging.info(f"Port:        {port}")
+        logging.info(f"Channel:     {channel}")
+        logging.info(f"State:       {state}")
 
     # Set socket details
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

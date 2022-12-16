@@ -11,13 +11,14 @@ These scripts require Python 3.6 or later, so when first run you may be asked to
 ## fadeDCA.py
 
 ```
-usage: fadeDCA [-h] [-v] -d <dca> -l <level> -t <duration>
+usage: fadeDCA [-h] [-v] [-V] -d <dca> -l <level> -t <duration>
 
 Fade a DCA on a Yamaha TF-series sound console.
 
 options:
   -h, --help            show this help message and exit
   -v, --version         returns the version number
+  -V, --verbose         output information about the running command
   -d <dca>, --dca <dca>
                         the DCA to fade
   -l <level>, --level <level>
@@ -29,13 +30,14 @@ options:
 ## muteInput.py
 
 ```
-usage: set_input_mute [-h] [-v] -c <channel> -s <state>
+usage: set_input_mute [-h] [-v] [-V] -c <channel> -s <state>
 
 Sets the state of an input mute on a Yamaha TF-series sound console.
 
 options:
   -h, --help            show this help message and exit
   -v, --version         returns the version number
+  -V, --verbose         output information about the running command
   -c <channel>, --channel <channel>
                         the channel to be muted
   -s <state>, --state <state>
@@ -45,31 +47,31 @@ options:
 ## recallScene.py
 
 ```
-usage: fadeDCA [-h] [-v] -d <dca> -l <level> -t <duration>
+usage: recall_scene [-h] [-v] [-V] [-b <bank>] -s <scene>
 
-Fade a DCA on a Yamaha TF-series sound console.
+Recall a scene on a Yamaha TF-series sound console.
 
 options:
   -h, --help            show this help message and exit
   -v, --version         returns the version number
-  -d <dca>, --dca <dca>
-                        the DCA to fade
-  -l <level>, --level <level>
-                        the target level
-  -t <duration>, --time <duration>
-                        the fade duration
+  -V, --verbose         output information about the running command
+  -b <bank>, --bank <bank>
+                        the scene bank
+  -s <scene>, --scene <scene>
+                        the scene to recall
 ```
 
 ## setMuteMaster.py
 
 ```
-usage: setMuteMaster [-h] [-v] [-m <master>] -s <state>
+usage: set_mute_master [-h] [-v] [-V] [-m <master>] -s <state>
 
 Sets the input and fx mute masters on a Yamaha TF-series sound console.
 
 options:
   -h, --help            show this help message and exit
   -v, --version         returns the version number
+  -V, --verbose         output information about the running command
   -m <master>, --master <master>
                         the mute master to be set
   -s <state>, --state <state>
