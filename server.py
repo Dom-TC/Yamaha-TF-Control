@@ -4,11 +4,9 @@ import sys
 # Set up a TCP/IP server
 tcp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-# Bind the socket to server address and port 81
+# Listen for incoming TCP Connections
 server_address = ("localhost", 49280)
 tcp_socket.bind(server_address)
-
-# Listen on port 81
 tcp_socket.listen(1)
 
 while True:
