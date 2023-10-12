@@ -12,7 +12,7 @@ ip = "localhost"
 port = 49280
 
 # Version
-version = "1.3.0"
+version = "1.4.0"
 tf_version = "4.01"
 
 
@@ -112,6 +112,15 @@ if __name__ == "__main__":
         help="output information about the running command",
     )
 
+    # IP Address
+    parser.add_argument(
+        "-i",
+        "--ip",
+        metavar="<ip>",
+        required=True,
+        help="the ip address of the console",
+    )
+
     # DCA number
     parser.add_argument(
         "-d",
@@ -145,6 +154,7 @@ if __name__ == "__main__":
 
     # Process args
     args = parser.parse_args()
+    ip = args.ip
     dca = args.dca
     target_level = args.level
     duration = args.time
