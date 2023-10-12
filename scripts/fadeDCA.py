@@ -6,6 +6,7 @@ import logging
 import socket
 import sys
 import time
+import ipaddress
 
 # Console Details
 ip = "localhost"
@@ -160,6 +161,14 @@ if __name__ == "__main__":
     duration = args.time
     verbose = args.verbose
 
+    # Validate ip and convert to string
+    if ip != "localhost":
+        try:
+            ip = format(ipaddress.ip_address(ip))
+        except ValueError:
+            parser.error(f"argument -i/--ip: must be a valid ip address: {ip}")
+
+    # Validate duration
     if duration < 0:
         parser.error(f"argument -t/--time: time must be greater than 0: {duration}")
 

@@ -5,6 +5,7 @@ import argparse
 import logging
 import socket
 import sys
+import ipaddress
 
 # Console Details
 ip = "localhost"
@@ -120,6 +121,13 @@ if __name__ == "__main__":
     master = args.master
     state = args.state
     verbose = args.verbose
+
+    # Validate ip and convert to string
+    if ip != "localhost":
+        try:
+            ip = format(ipaddress.ip_address(ip))
+        except ValueError:
+            parser.error(f"argument -i/--ip: must be a valid ip address: {ip}")
 
     if verbose:
         logging.info(f"IP:          {ip}")
