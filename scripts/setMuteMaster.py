@@ -2,10 +2,10 @@
 
 # Imports
 import argparse
+import ipaddress
 import logging
 import socket
 import sys
-import ipaddress
 
 # Console Details
 ip = "localhost"
