@@ -26,7 +26,7 @@ repos:
       - id: detect-private-key
       - id: fix-byte-order-marker
       - id: name-tests-test
-  - repo: https://gitlab.com/pycqa/flake8
+  - repo: https://github.com/PyCQA/flake8
     rev: 3.9.2
     hooks:
       - id: flake8
@@ -47,15 +47,9 @@ repos:
           - "-ll"
         files: .py$
   - repo: https://github.com/PyCQA/isort
-    rev: 5.10.1
+    rev: 5.12.0
     hooks:
       - id: isort
-  - repo: https://github.com/asottile/pyupgrade
-    rev: v2.34.0
-    hooks:
-      - id: pyupgrade
-        args:
-          - "--py36-plus"
   - repo: https://github.com/asottile/blacken-docs
     rev: v1.12.1
     hooks:
